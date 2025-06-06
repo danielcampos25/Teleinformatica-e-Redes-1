@@ -1,0 +1,37 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Pasta de resultados dos gráficos
+Resultados/
+
+# Pastas e arquivos de build / dist (se usar)
+build/
+dist/
+*.egg-info/
+.eggs/
+
+# Logs do pip
+pip-log.txt
+pip-delete-this-directory.txt
+
+# Relatórios de teste / cobertura
+htmlcov/
+.coverage
+.cache
+nosetests.xml
+coverage.xml
+*.cover
+*.py,cover
+
+# Arquivos temporários de editores
+*.swp
+*.swo
+*.tmp
+
+# VS Code settings (opcional)
+.vscode/
+
+# macOS system files (opcional)
+.DS_Store
