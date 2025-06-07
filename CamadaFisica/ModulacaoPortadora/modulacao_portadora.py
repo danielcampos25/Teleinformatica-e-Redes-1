@@ -30,32 +30,25 @@ def encode_FSK(bits, freq0=3, freq1=7, sample_rate=100):
     return np.array(signal)
 
 def encode_8QAM(bits, sample_rate=100):
-    """
-    8-QAM (Quadrature Amplitude Modulation) para grupos de 3 bits.
-    Combina fase e amplitude.
-    """
+    original_length = len(bits)  # Guarda o tamanho original pra ajudar no decode
     if len(bits) % 3 != 0:
-        bits += '0' * (3 - len(bits) % 3)  # Padding
-
+        bits += '0' * (3 - len(bits) % 3)
     t = np.linspace(0, 1, sample_rate, endpoint=False)
     signal = []
 
+    # Mapeamento consistente com a decodificação (I, Q)
     mapping = {
-        '000': (1, 0),    # amplitude=1, phase=0
-        '001': (1, 90),
-        '010': (1, 180),
-        '011': (1, 270),
-        '100': (2, 0),
-        '101': (2, 90),
-        '110': (2, 180),
-        '111': (2, 270),
+        '000': (1, 0), '001': (0, 1),
+        '010': (-1, 0), '011': (0, -1),
+        '100': (2, 0), '101': (0, 2),
+        '110': (-2, 0), '111': (0, -2),
     }
 
     for i in range(0, len(bits), 3):
         group = bits[i:i+3]
-        amp, phase_deg = mapping[group]
-        phase_rad = np.deg2rad(phase_deg)
-        wave = amp * np.cos(2 * np.pi * 5 * t + phase_rad)
+        I, Q = mapping[group]
+        # Criar a onda modulada (portadora em fase e quadratura)
+        wave = I * np.cos(2 * np.pi * 5 * t) - Q * np.sin(2 * np.pi * 5 * t)
         signal.extend(wave)
 
-    return np.array(signal)
+    return np.array(signal), original_length  # Retorna o tamanho original
